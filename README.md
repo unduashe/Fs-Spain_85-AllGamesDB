@@ -1,81 +1,117 @@
-# WebApp boilerplate with React JS and Flask API
+# 🎮 Comparador de Precios de Videojuegos de PC
+Un comparador de precios de videojuegos que extrae datos de Steam y G2A mediante web scraping, permitiendo a los usuarios encontrar las mejores ofertas y descubrir nuevos juegos gracias al sistema de filtros avanzados.
 
-Build web applications using React.js for the front end and python/flask for your backend API.
+# 🚀 Características  
+- 📊 **Comparación de precios** entre Steam y G2A.  
+- 🔍 **Filtros avanzados** por relevancia, fecha de salida, precio, valoración y etiquetas de los videojuegos.  
+- 🕵️ **Scraping de Steam** obtenido desde https://tornware.net/best-of-steam/ y traducido desde su archivo binario mediante ingeniería inversa.  
+- 📡 **Obtención de datos de G2A** simulando llamadas Postman.  
+- 💾 **Base de datos optimizada**, solo se almacenan los juegos que coinciden en ambas fuentes.
 
-- Documentation can be found here: https://start.4geeksacademy.com/starters/react-flask
-- Here is a video on [how to use this template](https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b)
-- Integrated with Pipenv for package managing.
-- Fast deployment to heroku [in just a few steps here](https://start.4geeksacademy.com/backend/deploy-heroku-posgres).
-- Use of .env file.
-- SQLAlchemy integration for database abstraction.
+## 🛠 Tecnologías utilizadas  
+- **Frontend**: React.js, Bootstrap.  
+- **Backend**: Flask, SQLAlchemy.  
+- **Scraping**:  
+  - Steam: transformación de datos binarios mediante ingeniería inversa obtenidos desde https://tornware.net/best-of-steam/ .  
+  - G2A: simulación de llamadas Postman con newman.  
+- **Base de datos**: SQLite.
+- **Autenticación**: JWT.
+- **Generación token recuperación de cuenta**: itsdangerous.
+- **Encriptado de contraseñas**: bcrypt.
+- **Envío de correos**: EmailJS.
+- **Control de versiones**: GIT y GitHub.
 
-### 1) Installation:
+## 📗 Pasos a seguir para iniciar/configurar el proyecto
 
-> If you use Github Codespaces (recommended) or Gitpod this template will already come with Python, Node and the Posgres Database installed. If you are working locally make sure to install Python 3.10, Node 
+### 📡 Codespaces
+**1- Incia el entorno virtual**
+  
+    pipenv shell
 
-It is recomended to install the backend first, make sure you have Python 3.8, Pipenv and a database engine (Posgress recomended)
+**2- Abre puertos locales desde codespaces:**
 
-1. Install the python packages: `$ pipenv install`
-2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure you replace the valudes with your database information:
+Abre los puertos para el front y el back desde la pestaña de "PUERTOS" de codespaces haciendo click derecho > visibilidad del puerto > public.
 
-| Engine    | DATABASE_URL                                        |
+**3- Configura el archivo .env**
+
+configura la variable de `BACKEND_URL` con la url de tu codespaces backend (puerto 3001), configura la variable `FRONTEND_URL` con la url de tu codespaces frontend (puerto 3000) y configura una `SECRET_KEY` con la palabra que quieras (EJ:`SECRET_KEY="palabra"`).
+
+
+**4- Crea la base de datos y realiza las migraciones**
+
+    pipenv run upgrade
+
+**5- Inserta datos iniciales**
+
+    flask insert-game-tag-data
+    flask insert-game-data
+
+**6- Levanta el proyecto**
+mediante los comandos `$npm run start` levantando el front y `$pipenv run start` levantando el back
+- ¡¡Compara y descrubre nuevos juegos!!
+
+### 🖥️ Configuración en entorno local
+**0- Requisitos previos**
+
+Tener instalados:
+
+    Python 3.x y pip
+    
+    Node.js y npm
+    
+    pipenv (pip install pipenv)
+    
+    Flask CLI (pip install flask)
+
+    bcrypt (pip install flask-bcrypt)
+
+    JWT (pip install flask-jwt-extended)
+
+    rc-slider (npm install rc-slider)
+
+
+**1- Clona el repositorio**
+
+    git clone https://github.com/4GeeksAcademy/Fs-Spain_85-AllGamesDB.git
+    cd Fs-Spain_85-AllGamesDB
+
+**2- Configura el entorno virtual y las dependencias del backend**
+
+    pipenv install
+
+**3- Crea el archivo .env en la raíz del proyecto con las siguientes variables**:
+
+    SECRET_KEY="tu_clave_secreta"
+    BACKEND_URL="http://localhost:3001"
+    FRONTEND_URL="http://localhost:3000"
+
+**4- Crea la base de datos y realiza las migraciones**
+
+Instala tu motor de base de datos y crea tu base de datos, dependiento de tu base de datos tendrás que crear una variable llamada `DATABASE_URL` con uno de los siguientes valores, aegurate de reemplazxar los valores con la información de tu base de datos:
+| Motor     | DATABASE_URL                                        |
 | --------- | --------------------------------------------------- |
 | SQLite    | sqlite:////test.db                                  |
 | MySQL     | mysql://username:password@localhost:port/example    |
 | Postgress | postgres://username:password@localhost:5432/example |
 
-4. Migrate the migrations: `$ pipenv run migrate` (skip if you have not made changes to the models on the `./src/api/models.py`)
-5. Run the migrations: `$ pipenv run upgrade`
-6. Run the application: `$ pipenv run start`
+Finalmente ejecuta el comando:
 
-> Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
+    pipenv run upgrade
 
-### Undo a migration
+**5- Inserta los datos iniciales**
 
-You are also able to undo a migration by running
+    flask insert-game-tag-data
+    flask insert-game-data
 
-```sh
-$ pipenv run downgrade
-```
+**6- Ejecuta el backend**
 
-### Backend Populate Table Users
+    pipenv run start
 
-To insert test users in the database execute the following command:
+**7- Ejecuta el frontend**
 
-```sh
-$ flask insert-test-users 5
-```
+    npm run start
 
-And you will see the following message:
+¡Listo! Accede a la aplicación en http://localhost:3000
 
-```
-  Creating test users
-  test_user1@test.com created.
-  test_user2@test.com created.
-  test_user3@test.com created.
-  test_user4@test.com created.
-  test_user5@test.com created.
-  Users created successfully!
-```
-
-### **Important note for the database and the data inside it**
-
-Every Github codespace environment will have **its own database**, so if you're working with more people eveyone will have a different database and different records inside it. This data **will be lost**, so don't spend too much time manually creating records for testing, instead, you can automate adding records to your database by editing ```commands.py``` file inside ```/src/api``` folder. Edit line 32 function ```insert_test_data``` to insert the data according to your model (use the function ```insert_test_users``` above as an example). Then, all you need to do is run ```pipenv run insert-test-data```.
-
-### Front-End Manual Installation:
-
--   Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
-
-1. Install the packages: `$ npm install`
-2. Start coding! start the webpack dev server `$ npm run start`
-
-## Publish your website!
-
-This boilerplate it's 100% read to deploy with Render.com and Heroku in a matter of minutes. Please read the [official documentation about it](https://start.4geeksacademy.com/deploy).
-
-### Contributors
-
-This template was built as part of the 4Geeks Academy [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about our [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), and [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
-
-You can find other templates and resources like this at the [school github page](https://github.com/4geeksacademy/).
+### Contribuciones
+Se hace uso de la plantilla de 4GeeksAcademy para la configuración inicial del proyecto [school github page](https://github.com/4geeksacademy/).
